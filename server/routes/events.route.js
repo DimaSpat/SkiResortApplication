@@ -12,4 +12,30 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/create", async (req, res) => {
+  try {
+    const form = req.body.form;
+
+    await Events.create({
+      title: form.title,
+      description: form.description,
+    });
+    res.json(form);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.delete("/delete/:id", async (req, res) => {
+  {
+    const { id } = req.params;
+    try {
+      await Events.findByIdAndDelete(id);
+      res.status(200).json({ message: "Event deleted successfully" });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+})
+
 module.exports = router;

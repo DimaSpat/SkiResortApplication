@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/home/Home.jsx";
 import { Events } from "./pages/events/Events.jsx";
 import { Header } from "./components/header/Header.jsx";
+import { Admin } from "./pages/admin/Admin.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const CartItems = React.createContext();
@@ -25,6 +26,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home theme={theme} />} />
               <Route path="/events" element={<QueryClientProvider client={queryClient}><Events /></QueryClientProvider>} />
+              <Route path="/admin" element={<QueryClientProvider client={queryClient}><Admin /></QueryClientProvider>} />
             </Routes>
           </div>
         </div>

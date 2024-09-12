@@ -19,6 +19,7 @@ export function Header({ theme, setTheme }) {
         <Link to="/about">About</Link>
         <Link to="/prices">Prices</Link>
         <Link to="/events">Events</Link>
+        <Link to="/admin">Admin</Link>
       </div>
       <div>
         <button onClick={onClickTheme}>
