@@ -39,6 +39,10 @@ export function Events() {
           { form }
         );
         refetch();
+        setForm({
+          title: "",
+          description: "",
+        })
       } catch (error) {
         console.log(error);
       }
@@ -48,23 +52,23 @@ export function Events() {
   }
 
   return (
-    <>
+    <div>
       <h2>Events</h2>
       <h3>Creat an event</h3>
       <form action="" onSubmit={(event) => event.preventDefault()}>
         <div>
           <label htmlFor="title">Title</label>
-          <input type="text" name="title" onChange={handleChange} />
+          <input type="text" name="title" value={form.title} onChange={handleChange} />
         </div>
         <div>
           <label htmlFor="description">Description</label>
-          <textarea name="description" id="description" onChange={handleChange}></textarea>
+          <textarea name="description" id="description" value={form.description} onChange={handleChange}></textarea>
         </div>
         <input type="submit" value="Create" onClick={handleCreate} />
       </form>
       <h3>Existing events</h3>
       {isLoading ?
-        <p>Loading...</p>
+        <p>Loading ...</p>
         :
         <>
           {data.length > 0 ?
@@ -79,6 +83,6 @@ export function Events() {
           }
         </>
       }
-    </>
+    </div>
   )
 }

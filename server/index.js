@@ -12,6 +12,7 @@ app.use(cors());
 app.use("/api/resort", require("./routes/resort.route"));
 app.use("/api/cart", require("./routes/cart.route"));
 app.use("/api/events", require("./routes/events.route"));
+app.use("/api/login", require("./routes/admin.route"));
 
 mongoose.connect(URL);
 

@@ -26,7 +26,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home theme={theme} />} />
               <Route path="/events" element={<QueryClientProvider client={queryClient}><Events /></QueryClientProvider>} />
-              <Route path="/admin" element={<QueryClientProvider client={queryClient}><Admin /></QueryClientProvider>} />
+              <Route path="/admin" element={<QueryClientProvider client={queryClient}><Admin theme={theme} /></QueryClientProvider>} />
             </Routes>
           </div>
         </div>

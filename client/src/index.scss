@@ -62,6 +62,10 @@ body {
     background: var(--dark);
     color: var(--light);
 
+    & input {
+      border: 1px solid white !important;
+    }
+
     * {
       color: var(--light);
       background: var(--dark);
