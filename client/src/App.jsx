@@ -4,6 +4,10 @@ import { Home } from "./pages/home/Home.jsx";
 import { Events } from "./pages/events/Events.jsx";
 import { Header } from "./components/header/Header.jsx";
 import { Admin } from "./pages/admin/Admin.jsx";
+import { Prices } from "./pages/prices/Prices.jsx";
+import { Bundles } from "./pages/prices/Bundles.jsx";
+import { Passes } from "./pages/prices/Passes.jsx";
+import { RentEquipment } from "./pages/prices/RentEquipement.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const CartItems = React.createContext();
@@ -27,6 +31,10 @@ function App() {
               <Route path="/" element={<Home theme={theme} />} />
               <Route path="/events" element={<QueryClientProvider client={queryClient}><Events /></QueryClientProvider>} />
               <Route path="/admin" element={<QueryClientProvider client={queryClient}><Admin theme={theme} /></QueryClientProvider>} />
+              <Route path="/prices" element={<Prices />} />
+              <Route path="/prices/bundles" element={<Bundles />} />
+              <Route path="/prices/passes" element={<Passes />} />
+              <Route path="/prices/rentEquipment" element={<RentEquipment />} />
             </Routes>
           </div>
         </div>
@@ -36,4 +44,3 @@ function App() {
 }
 
 export default App;
-
