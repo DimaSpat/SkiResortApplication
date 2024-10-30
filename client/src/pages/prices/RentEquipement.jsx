@@ -1,26 +1,9 @@
-const equipementData = {
-    begginer: {
-        name: 'Begginer',
-        description: 'Begginer gear for a day',
-        price: 50,
-        items: ['1 Entier day gear']
-    },
-    advanced: {
-        name: 'Advanced',
-        description: 'Advanced gear for a day',
-        price: 75,
-        items: ['1 Entier day gear']
-    },
-    expert: {
-        name: 'Expert',
-        description: 'Expert gear for a day',
-        price: 100,
-        items: ['1 Entier day gear']
-    }
-};
-
+import React from "react";
+import data from "./prices.json";
 
 export function RentEquipment() {
+    const [equipementData, setEquipementData] = React.useState(data.rentEquipement);
+
     return (
         <div>
             <h2>Rent Equipment</h2>

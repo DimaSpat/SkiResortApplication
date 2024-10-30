@@ -8,6 +8,7 @@ import { Prices } from "./pages/prices/Prices.jsx";
 import { Bundles } from "./pages/prices/Bundles.jsx";
 import { Passes } from "./pages/prices/Passes.jsx";
 import { RentEquipment } from "./pages/prices/RentEquipement.jsx";
+import { Contacts } from "./pages/contacts/Contacts.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const CartItems = React.createContext();
@@ -35,6 +36,7 @@ function App() {
               <Route path="/prices/bundles" element={<Bundles />} />
               <Route path="/prices/passes" element={<Passes />} />
               <Route path="/prices/rentEquipment" element={<RentEquipment />} />
+              <Route path="/contacts" element={<Contacts />} />
             </Routes>
           </div>
         </div>

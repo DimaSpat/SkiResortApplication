@@ -1,37 +1,9 @@
-const passesData = {
-    daypass: {
-        name: '1 Day',
-        description: 'Perfect for a whole day of skiing',
-        price: 80,
-        items: ['1 Entier day ski pass']
-    },
-    nightpass: {
-        name: 'Ski night',
-        description: 'Have fun in a night skiing experience in our lighten trails',
-        price: 45,
-        items: ['After 5pm to closing', 'One night', '20% Discount on apres-ski']
-    },
-    seasonpass: {
-        name: 'Season pass',
-        description: 'A pass for an entier season from 9am to 9pm',
-        price: 400,
-        items: ['All season pass', '20% Discount on everything', '3 Days of free ski pass for a friend']
-    },
-    backcountrypass: {
-        name: 'Back country access',
-        description: 'A pass to be able to access the back country to explore and have fun and also get access to some very hard terrain',
-        price: 25,
-        items: ['Access the back country region', 'Open while there is sun light', 'Works with daily and season pass']
-    },
-    terrainpass: {
-        name: 'Terrain park access',
-        description: 'Access the terrain park contain modules ranging from beginners to experts and with sizes of modules from XS to XXL',
-        price: 25,
-        items: ['All season pass', '20% Discount on everything', '3 Days of free ski pass for a friend', 'Works with daily and season pass']
-    }
-};
+import data from "./prices.json";
+import React from "react";
 
 export function Passes() {
+    const [passesData, setPassesData] = React.useState(data.Passes);
+
     return (
         <div>
             <h2>Passes</h2>
