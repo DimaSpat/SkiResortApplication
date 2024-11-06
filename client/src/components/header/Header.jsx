@@ -32,9 +32,6 @@ export function Header({ theme, setTheme }) {
         <Link to="/contacts">Contacts</Link>
       </div>
       <div>
-        <button onClick={onClickTheme}>
-          {theme ? "Dark Mode" : "Light Mode"}
-        </button>
         <button onClick={onClickCart}>{cartItems == [] ? "Cart" : "Buy"}</button>
       </div>
     </header>

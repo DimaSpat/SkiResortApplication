@@ -21,6 +21,15 @@ function App() {
   React.useEffect(() => {
     document.body.className = theme ? "" : "theme-dark";
   }, [theme]);
+  React.useEffect(() => {
+    const elements = document.querySelectorAll('.theme-dark div');
+    elements.forEach((element) => {
+      const backgroundImage = window.getComputedStyle(element).getPropertyValue('background-image');
+      if (backgroundImage !== 'none') {
+        element.classList.add('no-invert');
+      }
+    });
+  }, []);
 
   return (
     <BrowserRouter>
