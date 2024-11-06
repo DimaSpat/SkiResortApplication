@@ -1,14 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import React from "react";
 import { CartItems } from "../../App";
 import styles from "./Header.module.scss";
 
 export function Header({ theme, setTheme }) {
   const [cartItems, setCartItems] = React.useContext(CartItems);
+  const navigate = useNavigate();
 
   const onClickTheme = () => {
     setTheme(!theme);
   };
+
+  const onClickCart = () => {
+    if (cartItems && cartItems.length > 0) {
+      return setCartItems(cartItems);
+    } else {
+      navigate("/prices");
+    }
+  }
 
   return (
     <header className={styles.header}>
@@ -20,12 +29,10 @@ export function Header({ theme, setTheme }) {
         <Link to="/prices">Prices</Link>
         <Link to="/events">Events</Link>
         <Link to="/admin">Admin</Link>
+        <Link to="/contacts">Contacts</Link>
       </div>
       <div>
-        <button onClick={onClickTheme}>
-          {theme ? "Dark Mode" : "Light Mode"}
-        </button>
-        <button>{cartItems == [] ? "Cart" : "Buy"}</button>
+        <button onClick={onClickCart}>{cartItems == [] ? "Cart" : "Buy"}</button>
       </div>
     </header>
   );

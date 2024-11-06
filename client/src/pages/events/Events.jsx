@@ -3,6 +3,8 @@ import axios from "axios";
 import { Event } from "./Event";
 import { useQuery } from "@tanstack/react-query";
 
+import { Images } from "./Images";
+
 export function Events() {
   const getEvents = async () => {
     const response = await axios.get("/api/events");
@@ -22,6 +24,7 @@ export function Events() {
             :
             <h2>There isn&apos;t any events currently</h2>
           }
+            <Images />
           </>
         }
 

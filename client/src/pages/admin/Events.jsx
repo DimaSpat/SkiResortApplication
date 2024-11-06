@@ -7,6 +7,17 @@ export function Events() {
     title: "",
     description: "",
   });
+  const [selectedFiles, setSelectedFiles] = React.useState([]);
+  const [uploadMessage, setUploadMessage] = React.useState("");
+  const [images, setImages] = React.useState([]);
+  const [fullResLoaded, setFullResLoaded] = React.useState([]);
+  const [thumbnailLoaded, setThumbnailLoaded] = React.useState([]);
+  const imageRefs = React.useRef([]);
+  const loadedImages = React.useRef(new Set());
+
+  const handleFileChange = (event) => {
+    setSelectedFiles(event.target.files);
+  };
 
   const getEvents = async () => {
     const response = await axios.get("/api/events");
@@ -31,18 +42,93 @@ export function Events() {
     });
   };
 
+  const loadFullRes = (id, index) => {
+    if (loadedImages.current.has(id)) return;
+
+    loadedImages.current.add(id);
+
+    axios.get(`/api/events/images/full/${id}`, {
+      responseType: "arraybuffer",
+    })
+  }
+
+  React.useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const res = await axios.get("/api/events/images");
+
+        setImages(res.data);
+        setFullResLoaded(new Array(res.data.length).fill(false));
+        setThumbnailLoaded(new Array(res.data.length).fill(false));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchImages();
+  }, []);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const index = entry.target.getAttribute("data-index");
+          const id = entry.target.getAttribute("data-id");
+
+          setThumbnailLoaded(prev => {
+            const newLoaded = [...prev];
+            newLoaded[index] = true;
+            return newLoaded;
+          });
+
+          if (thumbnailLoaded.every(Boolean)) {
+            loadFullRes(id, index);
+          };
+
+          observer.unobserve(entry.target);
+        };
+      });
+    }, {
+      rootMargin: "100px",
+      threshold: 0.1,
+    });
+
+    imageRefs.current.forEach((imgRef) => {
+      if (imgRef) observer.observe(imgRef);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [images, thumbnailLoaded]);
+
   const handleCreate = async () => {
-    if (form.title != "" && form.description != "") {
+    if (form.title != "" || form.description != "" || selectedFiles != [] || selectedFiles.length) {
+      const formData = new FormData();
+
+      for (let i = 0; i < selectedFiles.length; i++) {
+        formData.append("images", selectedFiles[i]);
+      }
+
       try {
         await axios.post(
           "api/events/create",
           { form }
         );
+        await axios.post(
+          "/api/events/images/create",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" }
+          }
+        );
+        setUploadMessage("Images uploaded successfully!");
         refetch();
         setForm({
           title: "",
           description: "",
-        })
+        });
+        setSelectedFiles([]);
       } catch (error) {
         console.log(error);
       }
@@ -64,6 +150,10 @@ export function Events() {
           <label htmlFor="description">Description</label>
           <textarea name="description" id="description" value={form.description} onChange={handleChange}></textarea>
         </div>
+        <div>
+          <input type="file" accept="image/" onChange={handleFileChange} multiple />
+          <p>{uploadMessage}</p>
+        </div>
         <input type="submit" value="Create" onClick={handleCreate} />
       </form>
       <h3>Existing events</h3>
@@ -78,6 +168,26 @@ export function Events() {
                 <p>{event.description}</p>
                 <button onClick={() => deleteEvent(event._id)}>delete</button>
               </div>))
+            :
+            <p>There isn&apos;t any existing events currently</p>
+          }
+          {images.length ?
+            images.map((image, index) => {
+              <div key={image._id} className="blur-load"><img
+                src={`/api/images/thumbnail/${image._id}`}
+                alt="Thumbnail"
+                ref={el => (imageRefs.current[index] = el)}
+                data-id={image._id}
+                data-index={index}
+                style={{ display: fullResLoaded[index] ? 'none' : 'block' }}
+                className="low-res"
+              /></div>
+              {
+                fullResLoaded[index] && (
+                  <img src={fullResLoaded[index]} alt="Full resolution" className="high-res" />
+                )
+              }
+            })
             :
             <p>There isn&apos;t any existing events currently</p>
           }
