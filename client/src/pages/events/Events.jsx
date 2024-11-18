@@ -1,4 +1,5 @@
 import axios from "axios";
+import React from "react";
 
 import { Event } from "./Event";
 import { useQuery } from "@tanstack/react-query";
@@ -6,6 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Images } from "./Images";
 
 export function Events() {
+  const [eventId, setEventId] = React.useState(undefined);
+
   const getEvents = async () => {
     const response = await axios.get("/api/events");
     return response.data;

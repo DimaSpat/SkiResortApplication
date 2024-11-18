@@ -50,6 +50,14 @@ router.post("/create", async (req, res) => {
       title: form.title,
       description: form.description,
     });
+
+    const eventId = Events.findOne({
+      title: form.title,
+      description: form.description,
+    });
+
+    console.log(eventId.data);
+
     res.json(form);
   } catch (error) {
     console.log(error);

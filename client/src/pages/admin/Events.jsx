@@ -6,6 +6,7 @@ export function Events() {
   const [form, setForm] = React.useState({
     title: "",
     description: "",
+    image: [],
   });
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const [uploadMessage, setUploadMessage] = React.useState("");
@@ -16,13 +17,24 @@ export function Events() {
   const loadedImages = React.useRef(new Set());
 
   const handleFileChange = (event) => {
-    setSelectedFiles(event.target.files);
+    setForm.image(event.target.files);
   };
 
   const getEvents = async () => {
     const response = await axios.get("/api/events");
     return response.data;
   }
+
+  // const shuffleStrings(...strings) {
+  //   let charArray = strings.join("").split("");
+  //
+  //   for (let i = charArray.length - 1; i > 0; i--) {
+  //     const j = Math.floor(Math.random() * (i + 1));
+  //     [charArray[i], charArray[j]] = [charArray[j], charArray[i]];
+  //   }
+  //
+  //   return charArray.join('');
+  // }
 
   const deleteEvent = async (id) => {
     try {
@@ -110,14 +122,18 @@ export function Events() {
         formData.append("images", selectedFiles[i]);
       }
 
+      console.log(formData);
+      console.log(form);
+
       try {
-        await axios.post(
+        const response = await axios.post(
           "api/events/create",
           { form }
         );
+        console.log(response.data._id);
         await axios.post(
           "/api/events/images/create",
-          formData,
+          [formData, response.data._id],
           {
             headers: { "Content-Type": "multipart/form-data" }
           }
