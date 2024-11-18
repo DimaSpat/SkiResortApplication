@@ -5,7 +5,6 @@ const imageSchema = new mongoose.Schema({
   thumbnailData: Buffer,
   contentType: String,
   filename: String,
-  owner: { type: String, required: false }
 });
 
 module.exports = mongoose.model("Image", imageSchema);

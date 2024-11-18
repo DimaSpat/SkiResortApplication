@@ -89,11 +89,6 @@ export function Images() {
       <div className="grid-test">
         {images.map((image, index) => (
           <div key={image._id} className="blur-load">
-            <img src={`data:image/jpeg:base64${btoa(
-
-              new Uint8Array(image.thumbnailData).reduce((data, byte) => data + String.fromCharCode(byte), '')
-
-            )}`} alt="" />
             <img
               src={`/api/events/images/thumbnail/${image._id}`}
               alt="Thumbnail"
