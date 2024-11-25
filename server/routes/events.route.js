@@ -3,7 +3,7 @@ const router = Router();
 const Events = require("../models/Events");
 const sharp = require("sharp");
 const multer = require("multer");
-const Image = require("../models/Image");
+// const Image = require("../models/Image");
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -13,13 +13,19 @@ const convertToWebPAndSave = async (file) => {
     .webp({ quality: 80 })
     .toBuffer();
 
-  const imageDoc = new Image({
+  const imageDoc = {
     fullResData: webpBuffer,
     contentType: 'image/webp',
     filename: file.originalname,
-  });
+  };
 
-  await imageDoc.save();
+  // const imageDoc = new Image({
+  //   fullResData: webpBuffer,
+  //   contentType: 'image/webp',
+  //   filename: file.originalname,
+  // });
+  //
+  // await imageDoc.save();
   return imageDoc;
 };
 
@@ -43,20 +49,26 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/create", async (req, res) => {
+  console.log(1);
   try {
     const form = req.body.form;
-
-    await Events.create({
+    const thumbnailBuffer = await sharp(file.buffer)
+      .resize(16, 16)
+      .webp({ quality: 50 })
+      .toBuffer();
+    const webpBuffer = await sharp(file.buffer)
+      .webp({ quality: 80 })
+      .toBuffer();
+    
+    const event = new Events({
       title: form.title,
       description: form.description,
+      thumbnail: thumbnailBuffer,
+      webpImage: webpBuffer,
     });
 
-    const eventId = Events.findOne({
-      title: form.title,
-      description: form.description,
-    });
-
-    console.log(eventId.data);
+    await event.save();
+    console.log(2);
 
     res.json(form);
   } catch (error) {

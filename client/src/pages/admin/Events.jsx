@@ -17,7 +17,8 @@ export function Events() {
   const loadedImages = React.useRef(new Set());
 
   const handleFileChange = (event) => {
-    setForm.image(event.target.files);
+    const images = Array.from(event.target.files);
+    setForm((prevForm) => ({...prevForm, image: images}));
   };
 
   const getEvents = async () => {
@@ -129,14 +130,6 @@ export function Events() {
         const response = await axios.post(
           "api/events/create",
           { form }
-        );
-        console.log(response.data._id);
-        await axios.post(
-          "/api/events/images/create",
-          [formData, response.data._id],
-          {
-            headers: { "Content-Type": "multipart/form-data" }
-          }
         );
         setUploadMessage("Images uploaded successfully!");
         refetch();

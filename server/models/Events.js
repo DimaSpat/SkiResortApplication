@@ -3,12 +3,8 @@ const { Schema, model } = require("mongoose");
 const schema = new Schema({
   title: { type: String, require: true },
   description: { type: String, require: true },
-  image: {
-    fullResData: Buffer,
-    thumbnailData: Buffer,
-    contentType: String,
-    filename: String,
-  }
+  thumbnail: { type: Buffer, require: true },
+  webpImage: { type: Buffer, require: true },
 });
 
 module.exports = model("Events", schema);
