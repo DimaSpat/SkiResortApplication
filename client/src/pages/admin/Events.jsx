@@ -6,7 +6,7 @@ export function Events() {
   const [form, setForm] = React.useState({
     title: "",
     description: "",
-    image: [],
+    image: undefined,
   });
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const [uploadMessage, setUploadMessage] = React.useState("");
@@ -160,7 +160,7 @@ export function Events() {
           <textarea name="description" id="description" value={form.description} onChange={handleChange}></textarea>
         </div>
         <div>
-          <input type="file" accept="image/" onChange={handleFileChange} multiple />
+          <input type="file" accept="image/" onChange={handleFileChange} />
           <p>{uploadMessage}</p>
         </div>
         <input type="submit" value="Create" onClick={handleCreate} />
