@@ -6,7 +6,7 @@ export function Events() {
   const [form, setForm] = React.useState({
     title: "",
     description: "",
-    image: [],
+    image: undefined,
   });
   const [selectedFiles, setSelectedFiles] = React.useState([]);
   const [uploadMessage, setUploadMessage] = React.useState("");
@@ -17,7 +17,8 @@ export function Events() {
   const loadedImages = React.useRef(new Set());
 
   const handleFileChange = (event) => {
-    setForm.image(event.target.files);
+    const images = Array.from(event.target.files);
+    setForm((prevForm) => ({...prevForm, image: images}));
   };
 
   const getEvents = async () => {
@@ -130,14 +131,6 @@ export function Events() {
           "api/events/create",
           { form }
         );
-        console.log(response.data._id);
-        await axios.post(
-          "/api/events/images/create",
-          [formData, response.data._id],
-          {
-            headers: { "Content-Type": "multipart/form-data" }
-          }
-        );
         setUploadMessage("Images uploaded successfully!");
         refetch();
         setForm({
@@ -167,7 +160,7 @@ export function Events() {
           <textarea name="description" id="description" value={form.description} onChange={handleChange}></textarea>
         </div>
         <div>
-          <input type="file" accept="image/" onChange={handleFileChange} multiple />
+          <input type="file" accept="image/" onChange={handleFileChange} />
           <p>{uploadMessage}</p>
         </div>
         <input type="submit" value="Create" onClick={handleCreate} />

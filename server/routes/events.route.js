@@ -3,7 +3,7 @@ const router = Router();
 const Events = require("../models/Events");
 const sharp = require("sharp");
 const multer = require("multer");
-const Image = require("../models/Image");
+// const Image = require("../models/Image");
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -13,13 +13,19 @@ const convertToWebPAndSave = async (file) => {
     .webp({ quality: 80 })
     .toBuffer();
 
-  const imageDoc = new Image({
+  const imageDoc = {
     fullResData: webpBuffer,
     contentType: 'image/webp',
     filename: file.originalname,
-  });
+  };
 
-  await imageDoc.save();
+  // const imageDoc = new Image({
+  //   fullResData: webpBuffer,
+  //   contentType: 'image/webp',
+  //   filename: file.originalname,
+  // });
+  //
+  // await imageDoc.save();
   return imageDoc;
 };
 
@@ -43,20 +49,30 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/create", async (req, res) => {
+  console.log(1);
   try {
     const form = req.body.form;
-
-    await Events.create({
+    const file = form.image[0];
+    console.log(form);
+    console.log(form.image);
+    const thumbnailBuffer = await sharp(file.buffer)
+      .resize(16, 16)
+      .webp({ quality: 50 })
+      .toBuffer();
+    const webpBuffer = await sharp(file.buffer)
+      .webp({ quality: 80 })
+      .toBuffer();
+    
+    const event = new Events({
       title: form.title,
       description: form.description,
+      thumbnail: thumbnailBuffer,
+      webpImage: webpBuffer,
     });
 
-    const eventId = Events.findOne({
-      title: form.title,
-      description: form.description,
-    });
-
-    console.log(eventId.data);
+    await event.save();
+    console.log(2);
+    console.log(event);
 
     res.json(form);
   } catch (error) {
@@ -96,43 +112,43 @@ router.post("/images/create", upload.array("images"), async (req, res) => {
   }
 });
 
-router.get("/images", async (req, res) => {
-  try {
-    const images = await Image.find().lean(); // Add .lean() to make it faster if it would work
-    res.status(200).json(images);
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-router.get("/images/full/:id", async (req, res) => {
-  try {
-    const image = await Image.findById(req.params.id);
-
-    if (!image || !image.fullResData) {
-      return res.status(404).json({ error: "Full resolution image is not found" });
-    }
-
-    res.set("Content-Type", image.contentType);
-    res.send(image.fullResData);
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-router.get("/images/thumbnail/:id", async (req, res) => {
-  try {
-    const image = await Image.findById(req.params.id);
-
-    if (!image || !image.thumbnailData) {
-      return res.status(404).json({ error: "thumbnail not found" });
-    }
-
-    res.set("Content-Type", image.contentType);
-    res.send(image.thumbnailData);
-  } catch (error) {
-    console.error("Error fetching thumbnail: ", error);
-  }
-})
-
+// router.get("/images", async (req, res) => {
+//   try {
+//     const images = await Image.find().lean(); // Add .lean() to make it faster if it would work
+//     res.status(200).json(images);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
+//
+// router.get("/images/full/:id", async (req, res) => {
+//   try {
+//     const image = await Image.findById(req.params.id);
+//
+//     if (!image || !image.fullResData) {
+//       return res.status(404).json({ error: "Full resolution image is not found" });
+//     }
+//
+//     res.set("Content-Type", image.contentType);
+//     res.send(image.fullResData);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
+//
+// router.get("/images/thumbnail/:id", async (req, res) => {
+//   try {
+//     const image = await Image.findById(req.params.id);
+//
+//     if (!image || !image.thumbnailData) {
+//       return res.status(404).json({ error: "thumbnail not found" });
+//     }
+//
+//     res.set("Content-Type", image.contentType);
+//     res.send(image.thumbnailData);
+//   } catch (error) {
+//     console.error("Error fetching thumbnail: ", error);
+//   }
+// })
+//
 module.exports = router;
