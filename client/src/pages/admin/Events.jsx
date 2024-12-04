@@ -119,8 +119,8 @@ export function Events() {
     if (form.title != "" || form.description != "" || selectedFiles != [] || selectedFiles.length) {
       const formData = form;
       console.log(formData);
+      console.log(form);
       try {
-        console.log(form);
         const response = await axios.post(
           "api/events/create",
           formData,
