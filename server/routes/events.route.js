@@ -50,8 +50,10 @@ router.get("/", async (req, res) => {
 
 router.post("/create", async (req, res) => {
   console.log(1);
+  console.log(req.body.form);
   try {
     const form = req.body.form;
+    console.log(form);
     const file = form.image[0];
     console.log(form);
     console.log(form.image);
