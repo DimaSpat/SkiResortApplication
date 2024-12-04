@@ -117,19 +117,18 @@ export function Events() {
 
   const handleCreate = async () => {
     if (form.title != "" || form.description != "" || selectedFiles != [] || selectedFiles.length) {
-      const formData = new FormData();
-
-      for (let i = 0; i < selectedFiles.length; i++) {
-        formData.append("images", selectedFiles[i]);
-      }
-
+      const formData = form;
       console.log(formData);
-      console.log(form);
-
       try {
+        console.log(form);
         const response = await axios.post(
           "api/events/create",
-          { form }
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
         );
         setUploadMessage("Images uploaded successfully!");
         refetch();
@@ -198,7 +197,7 @@ export function Events() {
               }
             })
             :
-            <p>There isn&apos;t any existing events currently</p>
+            <p>There isn&apos;t any existing images currently</p>
           }
         </>
       }
