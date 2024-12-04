@@ -50,13 +50,11 @@ router.get("/", async (req, res) => {
 
 router.post("/create", async (req, res) => {
   console.log(1);
-  console.log(req.body.form);
+  console.log(req);
   try {
     const form = req.body.form;
+    const file = form.file[0];
     console.log(form);
-    const file = form.image[0];
-    console.log(form);
-    console.log(form.image);
     const thumbnailBuffer = await sharp(file.buffer)
       .resize(16, 16)
       .webp({ quality: 50 })
