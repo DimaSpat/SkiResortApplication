@@ -48,18 +48,18 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/create", async (req, res) => {
-  console.log(1);
-  console.log(req);
+router.post("/create", upload.array("file"), async (req, res) => {
   try {
-    const form = req.body.form;
-    const file = form.file[0];
-    console.log(form);
-    const thumbnailBuffer = await sharp(file.buffer)
+    const { title, description, file } = req.body;
+    console.log(file);
+    console.log(req.body);
+    const binaryData = Buffer.from(file, 'base64');
+    console.log(typeof file)
+    const thumbnailBuffer = await sharp(binaryData.buffer)
       .resize(16, 16)
       .webp({ quality: 50 })
       .toBuffer();
-    const webpBuffer = await sharp(file.buffer)
+    const webpBuffer = await sharp(binaryData.buffer)
       .webp({ quality: 80 })
       .toBuffer();
     

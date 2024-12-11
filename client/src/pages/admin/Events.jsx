@@ -117,9 +117,10 @@ export function Events() {
 
   const handleCreate = async () => {
     if (form.title != "" || form.description != "" || selectedFiles != [] || selectedFiles.length) {
-      const formData = form;
-      console.log(formData);
-      console.log(form);
+      const formData = new FormData();
+      formData.append("title", form.title);
+      formData.append("description", form.description);
+      formData.append("file", form.image[0]);
       try {
         const response = await axios.post(
           "api/events/create",
@@ -135,6 +136,7 @@ export function Events() {
         setForm({
           title: "",
           description: "",
+          image: undefined,
         });
         setSelectedFiles([]);
       } catch (error) {
