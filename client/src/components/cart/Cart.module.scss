@@ -1,0 +1,28 @@
+.Cart {
+  position: fixed;
+  top: 90px;
+  right: -200px;
+
+  width: 200px;
+  height: calc(100vh - 90px);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: lightblue !important;
+  border: 1px solid blue !important;
+
+  transition: right 1s ease-out; 
+
+  & > h2 { 
+    color: red;
+  }
+}
+
+
+.true {
+  color: green;
+  right: 0 !important;
+}
+

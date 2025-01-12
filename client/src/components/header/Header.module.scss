@@ -48,8 +48,15 @@
           font-weight: 600;
           margin-left: 25px;
           padding-inline: 50px;
+          transform: background 0.5s;
         }
       }
     }
   }
+}
+
+/* Fix to make the cart button red */
+
+.Cart {
+  background: red !important;
 }

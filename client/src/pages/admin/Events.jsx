@@ -23,6 +23,7 @@ export function Events() {
 
   const getEvents = async () => {
     const response = await axios.get("/api/events");
+    console.log(response.data);
     return response.data;
   }
 
@@ -55,15 +56,26 @@ export function Events() {
     });
   };
 
-  const loadFullRes = (id, index) => {
-    if (loadedImages.current.has(id)) return;
-
-    loadedImages.current.add(id);
-
-    axios.get(`/api/events/images/full/${id}`, {
-      responseType: "arraybuffer",
-    })
-  }
+  // const loadFullRes = (id, index) => {
+  //   if (loadedImages.current.has(id)) return;
+  //
+  //   loadedImages.current.add(id);
+  //
+  //   axios.get(`/api/events/images/full/${id}`, {
+  //     responseType: "arraybuffer",
+  //   }).then(response => {
+  //     const blob = new Blob([response.data], { type: "image/webp" });
+  //     const url = URL.createObjectURL(blob);
+  //     const img = new Image();
+  //     img.src = url;
+  //     img.onload = () => {
+  //       setFullResLoaded(prev => {
+  //         const newLoaded = [...prev];
+  //         newLoaded
+  //       })
+  //     }
+  //   })
+  // }
 
   React.useEffect(() => {
     const fetchImages = async () => {
@@ -116,7 +128,7 @@ export function Events() {
   }, [images, thumbnailLoaded]);
 
   const handleCreate = async () => {
-    if (form.title != "" || form.description != "" || selectedFiles != [] || selectedFiles.length) {
+    if (form.title != "" || form.description != "" || form.image != undefined) {
       const formData = new FormData();
       formData.append("title", form.title);
       formData.append("description", form.description);
@@ -176,30 +188,15 @@ export function Events() {
               <div key={event._id}>
                 <h4>{event.title}</h4>
                 <p>{event.description}</p>
+                <img
+                  src={`data:image/webp;base64,${event.webpImage}`}
+                  alt="ThumbnailImage"
+                  style={{width: '100px', height: "100px"}}
+                />
                 <button onClick={() => deleteEvent(event._id)}>delete</button>
               </div>))
             :
             <p>There isn&apos;t any existing events currently</p>
-          }
-          {images.length ?
-            images.map((image, index) => {
-              <div key={image._id} className="blur-load"><img
-                src={`/api/images/thumbnail/${image._id}`}
-                alt="Thumbnail"
-                ref={el => (imageRefs.current[index] = el)}
-                data-id={image._id}
-                data-index={index}
-                style={{ display: fullResLoaded[index] ? 'none' : 'block' }}
-                className="low-res"
-              /></div>
-              {
-                fullResLoaded[index] && (
-                  <img src={fullResLoaded[index]} alt="Full resolution" className="high-res" />
-                )
-              }
-            })
-            :
-            <p>There isn&apos;t any existing images currently</p>
           }
         </>
       }

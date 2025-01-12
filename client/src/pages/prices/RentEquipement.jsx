@@ -1,5 +1,6 @@
 import React from "react";
 import data from "./prices.json";
+import ItemCard from "./ItemCard.jsx";
 
 export function RentEquipment() {
     const [equipementData, setEquipementData] = React.useState(data.rentEquipement);
@@ -11,20 +12,8 @@ export function RentEquipment() {
                 {equipementData.length === 0 ? (
                     <p>There aren&apos;t any existing passes currently.</p>
                 ) : (
-                    Object.values(equipementData).map((pass, index) => (
-                        <div key={index} style={{ marginBottom: '20px' }}>
-                            <h3>{pass.name}</h3>
-                            <p>{pass.description}</p>
-                            <p>Price: {pass.price}</p>
-                            <p>Includes:</p>
-                            <ul>
-                                {pass.items.map((item, idx) => (
-                                    <li key={idx}>{item}</li>
-                                ))}
-                            </ul>
-                            <button onClick={() => alert(`Added ${pass.name} to the cart!`)}>Add to Cart</button>
-                        </div>
-
+                    Object.values(equipementData).map((bundle, index) => (
+                        <ItemCard bundle={bundle} key={bundle.id || `${bundle.name}-${Math.random()*1000}` } />
                     ))
                 )}
             </div>

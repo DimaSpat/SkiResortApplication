@@ -50,31 +50,26 @@ router.get("/", async (req, res) => {
 
 router.post("/create", upload.array("file"), async (req, res) => {
   try {
-    const { title, description, file } = req.body;
-    console.log(file);
-    console.log(req.body);
-    const binaryData = Buffer.from(file, 'base64');
-    console.log(typeof file)
-    const thumbnailBuffer = await sharp(binaryData.buffer)
+    const { title, description } = req.body;
+    const file = req.files[0];
+    const thumbnailBuffer = await sharp(file.buffer)
       .resize(16, 16)
       .webp({ quality: 50 })
       .toBuffer();
-    const webpBuffer = await sharp(binaryData.buffer)
+    const webpBuffer = await sharp(file.buffer)
       .webp({ quality: 80 })
       .toBuffer();
     
     const event = new Events({
-      title: form.title,
-      description: form.description,
+      title: title,
+      description: description,
       thumbnail: thumbnailBuffer,
       webpImage: webpBuffer,
     });
 
     await event.save();
-    console.log(2);
-    console.log(event);
 
-    res.json(form);
+    res.json("Successfully sent new event to the database");
   } catch (error) {
     console.log(error);
   }
@@ -92,26 +87,26 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 
-router.post("/images/create", upload.array("images"), async (req, res) => {
-  try {
-    const files = req.files;
-    const savedImages = [];
-
-    for (let file of files) {
-      const thumbnail = await createThumbnail(file);
-      const webpImage = await convertToWebPAndSave(file);
-
-      webpImage.thumbnailData = thumbnail;
-      await webpImage.save();
-      savedImages.push(webpImage);
-    }
-
-    res.status(200).json({ message: "Images uploaded successfully", images: savedImages });
-  } catch (error) {
-    console.error(error);
-  }
-});
-
+// router.post("/images/create", upload.array("images"), async (req, res) => {
+//   try {
+//     const files = req.files;
+//     const savedImages = [];
+//
+//     for (let file of files) {
+//       const thumbnail = await createThumbnail(file);
+//       const webpImage = await convertToWebPAndSave(file);
+//
+//       webpImage.thumbnailData = thumbnail;
+//       await webpImage.save();
+//       savedImages.push(webpImage);
+//     }
+//
+//     res.status(200).json({ message: "Images uploaded successfully", images: savedImages });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
+//
 // router.get("/images", async (req, res) => {
 //   try {
 //     const images = await Image.find().lean(); // Add .lean() to make it faster if it would work
