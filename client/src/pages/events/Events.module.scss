@@ -1,0 +1,80 @@
+.container {
+  padding: 50px 100px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  gap: 50px;
+
+  background-image: url(../../assets/SkiResortNight.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  min-height: calc(100vh - 90px);
+
+  &:not(:last-child) {
+    padding-bottom: 50px
+  }
+
+  & > h2 {
+    text-align: center;
+    color: white;
+    padding-bottom: 50px;
+    font-size: 42px;
+    background: transparent !important;
+  }
+
+  & > div {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-around;
+
+    opacity: 0.85;
+
+    gap: 20px;
+
+    padding: 20px;
+
+    border: 0;
+    border-radius: 18px;
+
+    background: rgb(225, 225, 225);
+    box-shadow: 5px 10px 24px rgba(0, 0, 0, .15);
+
+    transition: box-shadow 0.5s;
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+
+      & > * {
+        background: rgb(225, 225, 225) !important;
+      }
+    }
+
+    &:hover {
+      box-shadow: 5px 10px 24px rgba(154, 65, 0, .3);
+    }
+
+    & > img {
+      width: 300px;
+      height: 200px;
+
+      border-radius: 6px;
+
+      box-shadow: 5px 10px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    &:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    & > * {
+      background: transparent !important;
+    }
+  }
+}
