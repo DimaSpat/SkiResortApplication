@@ -15,8 +15,7 @@ export function Header({ theme, setTheme }) {
 
   const onClickCart = () => {
     if (cartItems.length > 0) {
-      setCartState(true);
-      console.log(cartState);
+      setCartState(!cartState);
     } else {
       navigate("/prices");
     }

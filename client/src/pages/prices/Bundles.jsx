@@ -14,7 +14,7 @@ export function Bundles() {
                         <p>There aren&apos;t any existing bundles currently.</p>
                     ) : (
                         Object.values(bundlesData).map(bundle => (
-                            <ItemCard bundle={bundle} />
+                            <ItemCard bundle={bundle} key={bundle.id || `${bundle.name}-${Math.random()*1000}` } />
                         ))
                     )
                 }

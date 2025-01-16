@@ -13,7 +13,7 @@ export function Passes() {
                     <p>There aren&apos;t any existing passes currently.</p>
                 ) : (
                     Object.values(passesData).map((bundle) => (
-                      <ItemCard bundle={bundle} />
+                      <ItemCard bundle={bundle} key={bundle.id || `${bundle.name}-${Math.random()*1000}` } />
                     ))
                 )}
             </div>
