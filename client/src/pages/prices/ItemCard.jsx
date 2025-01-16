@@ -5,28 +5,22 @@ export default function ItemCard({bundle}) {
   const [cartItems, setCartItems] = useContext(CartItems);
 
   const onAddItemToCart = (bundle) => {
-      if (true) {
+      if (!cartItems.some(item => item.name === bundle.name)) {
           var updatedCartItems = [...cartItems, bundle];
           setCartItems(updatedCartItems);
-          //localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+          localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
       }
   }
 
   useEffect(() => {
       const storedData = localStorage.getItem("cartItems");
       if (storedData) {
-          setCartItems(JSON.parse(storedData));
+          const parseData = JSON.parse(storedData);
+          if (JSON.stringify(parseData) !== JSON.stringify(cartItems)) {
+              setCartItems(parseData);
+          }
       }
-      console.log(bundle);
-      {bundle.items.map((item, i) => {
-          console.log(`${item}-${Math.random()*1000}`);
-      })}
   }, []);
-
-  useEffect(() => {
-      console.log(cartItems);
-      console.log(localStorage);
-  }, [cartItems]);
 
   return (
     <div style={{ marginBottom: '20px' }}>
