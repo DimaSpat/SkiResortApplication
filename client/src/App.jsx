@@ -10,9 +10,13 @@ import { Passes } from "./pages/prices/Passes.jsx";
 import { RentEquipment } from "./pages/prices/RentEquipement.jsx";
 import { Contacts } from "./pages/contacts/Contacts.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { loadStripe } from "@stripe/stripe-js";
+import {Elements} from "@stripe/react-stripe-js";
 
 export const CartItems = React.createContext();
 const queryClient = new QueryClient();
+
+const stripePromise = loadStripe("pk_test_51PVC43DEOjHV29K2TBNV53WZ9ZqWWi8KpkIBMT2XwqWdvls5CM2JMtpakPPSiV58bfV0XbT228YPd1jIrXB7aHS6007yQYhRVX");
 
 function App() {
   const [theme, setTheme] = React.useState(true);
@@ -33,7 +37,8 @@ function App() {
 
   return (
     <BrowserRouter>
-      <CartItems.Provider value={[cartItems, setCartItems]}>
+      <Elements stripe={stripePromise} >
+        <CartItems.Provider value={[cartItems, setCartItems]}>
         <div className="container">
           <Header theme={theme} setTheme={setTheme} />
           <div className="content">
@@ -49,8 +54,9 @@ function App() {
             </Routes>
           </div>
         </div>
-      </CartItems.Provider>
-    </BrowserRouter>
+       </CartItems.Provider>
+     </Elements>
+  </BrowserRouter>
   );
 }
 
