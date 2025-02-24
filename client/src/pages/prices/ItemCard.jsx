@@ -20,6 +20,9 @@ export default function ItemCard({bundle}) {
               setCartItems(parseData);
           }
       }
+
+      console.log(cartItems);
+      console.log(typeof cartItems);
   }, []);
 
   return (

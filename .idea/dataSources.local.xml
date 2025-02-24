@@ -6,5 +6,11 @@
       <secret-storage>master_key</secret-storage>
       <schema-mapping />
     </data-source>
+    <data-source name="@skiresort.3gnwk.mongodb.net [2]" uuid="4da14cc5-a803-4b4f-9c38-630e7165fe2b">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MONGO" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>admin</user-name>
+      <schema-mapping />
+    </data-source>
   </component>
 </project>

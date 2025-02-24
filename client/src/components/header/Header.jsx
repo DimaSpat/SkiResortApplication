@@ -38,7 +38,7 @@ export function Header({ theme, setTheme }) {
           <button className={cartItems.length > 0 ? styles.Cart : ""} onClick={onClickCart}>{cartItems.length > 0 ? `${cartItems.length} items in Cart` : "Buy"}</button>
         </div>
       </header>
-      <Cart state={cartState} />
+      <Cart state={cartState} setState={setCartState} />
     </>
   );
 }
